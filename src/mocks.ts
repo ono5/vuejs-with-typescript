@@ -1,6 +1,5 @@
 import { Post } from './types'
 import moment from 'moment'
-import { mount } from '@vue/test-utils'
 
 export const basePost: Post = {
     id: 1,

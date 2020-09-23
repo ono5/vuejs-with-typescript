@@ -8,17 +8,40 @@
         {{ period }}
       </a>
     </p>
+
+    <a class="panel-block" v-for="post in posts" :key="post.id">
+      <div>
+        <a>{{post.title}}</a>
+        <div>{{ post.created.format('Do MM')}}</div>
+      </div>
+    </a>
   </nav>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
-import { Period } from './types'
+import { defineComponent, ref, computed } from 'vue'
+import { Post, Period } from './types'
+import { todayPost, thisWeek, thisMonth } from './mocks'
+import moment from 'moment'
 
 export default defineComponent({
   setup() {
     const periods: Period[] = ['today', 'this week', 'this month']
     const selectedPeriod = ref<Period>('today')
+
+    const posts = computed(() => [todayPost, thisWeek, thisMonth].filter(post => {
+        if (selectedPeriod.value === 'today' && post.created.isAfter(moment().subtract(1, 'day'))){
+          return true
+        }
+        if (selectedPeriod.value === 'this week' && post.created.isAfter(moment().subtract(7, 'day'))){
+          return true
+        }
+        if (selectedPeriod.value === 'this month' && post.created.isAfter(moment().subtract(7, 'month'))){
+          return true
+        }
+        return false
+      })
+    )
 
     const setPeriod = (period: Period) => {
       selectedPeriod.value = period
@@ -27,7 +50,8 @@ export default defineComponent({
     return {
       periods,
       selectedPeriod,
-      setPeriod
+      setPeriod,
+      posts
     }
   }
 
