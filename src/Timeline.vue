@@ -16,8 +16,8 @@
 import { defineComponent, ref, computed } from 'vue'
 import { Post, Period } from './types'
 import TimelinePost  from './TimelinePost.vue'
-import { todayPost, thisWeek, thisMonth } from './mocks'
 import moment from 'moment'
+import { useStore } from './store'
 
 const delay = (ms: number) => new Promise(res => setTimeout(res, ms))
 
@@ -30,8 +30,14 @@ export default defineComponent({
     const periods: Period[] = ['today', 'this week', 'this month']
     const selectedPeriod = ref<Period>('today')
 
+    const store = useStore()
+    const allPosts = store.getState().posts.ids.reduce<Post[]>((acc, id) => {
+      const post = store.getState().posts.all[id]
+      return acc.concat(post)
+    }, [])
+
     await delay(2000)
-    const posts = computed(() => [todayPost, thisWeek, thisMonth].filter(post => {
+    const posts = computed(() => allPosts.filter(post => {
         if (selectedPeriod.value === 'today' && post.created.isAfter(moment().subtract(1, 'day'))){
           return true
         }
