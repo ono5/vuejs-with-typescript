@@ -1,13 +1,14 @@
 import { mount } from '@vue/test-utils'
 import { nextTick } from 'vue'
 import Timeline from './Timeline.vue'
+import Home from './Home.vue'
 
 
 describe('Timeline', () => {
-    it('renders 3 time periods', () => {
-        const wrapper = mount(Timeline)
+    it.only('renders a loader', () => {
+        const wrapper = mount(Home)
 
-        expect(wrapper.findAll('[data-test="period"]')).toHaveLength(3)
+        expect(wrapper.find('[data-test="progress"]').exists()).toBe(true)
     })
 
     it('udates hte period when clicked', async () => {
