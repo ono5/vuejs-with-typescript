@@ -1,5 +1,5 @@
 <template>
-  <post-writer :post="post" />
+  <post-writer :post="post" @save="save" />
 </template>
 
 <script lang="ts">
@@ -7,6 +7,8 @@ import { defineComponent } from 'vue'
 import PostWriter from './PostWriter.vue'
 import { Post } from './types'
 import moment from 'moment'
+import { useStore } from './store'
+import { useRouter } from 'vue-router'
 
 export default defineComponent({
   name: 'NewPost',
@@ -23,8 +25,18 @@ export default defineComponent({
       created: moment(),
       authorId: 0
     }
+
+    const store = useStore()
+    const router = useRouter()
+
+    const save = async (post: Post) => {
+      await store.createPost(post)
+      router.push('/')
+    }
+
     return {
-      post
+      post,
+      save
     }
   }
 })
