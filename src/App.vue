@@ -1,34 +1,20 @@
 <template>
-<section class="section">
-  <div class="container">
-    <Suspense>
-      <template #default>
-        <timeline />
-      </template>
-      <template #fallback>
-        <div class="columns">
-          <div class="column is-one-third" />
-          <div class="column is-one-third">
-            <Progress />
-          </div>
-          <div class="column is-one-third" />
-        </div>
-      </template>
-    </Suspense>
-  </div>
-</section>
+  <section class="section">
+    <div class="container">
+      <NavBar />
+      <router-view />
+    </div>
+  </section>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import Timeline from './Timeline.vue'
-import Progress from './Progress.vue'
+import NavBar from './NavBar.vue'
 
 export default defineComponent({
+  name: 'App',
   components: {
-    Timeline,
-    Progress
-  },
-  name: 'App'
+    NavBar
+  }
 })
 </script>
