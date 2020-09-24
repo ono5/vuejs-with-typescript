@@ -10,16 +10,24 @@
           </div>
         </div>
       </div>
+
+      <div class="colunns">
+        <div class="column is-one-half">
+          <div class="contenteditable" id="markdown" ref="contentEditable" />
+        </div>
+        <div class="column is-one-half"></div>
+      </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, onMounted, ref } from 'vue'
 import { Post } from './types'
 
 export default defineComponent({
   name: 'PostWriter',
+
   props: {
     post: {
       type: Object as () => Post,
@@ -29,9 +37,15 @@ export default defineComponent({
 
   setup(props) {
     const title = ref(props.post.title)
+    const contentEditable = ref<null | HTMLDivElement>(null)
+
+    onMounted(() => {
+      console.log(contentEditable.value)
+    })
 
     return {
-      title
+      title,
+      contentEditable
     }
   }
 })
