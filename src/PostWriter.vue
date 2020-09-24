@@ -10,15 +10,17 @@
           </div>
         </div>
       </div>
+  </div>
 
-      <div class="colunns">
-        <div class="column is-one-half">
-          <div class="contenteditable" id="markdown" ref="contentEditable" />
-        </div>
-        <div class="column is-one-half"></div>
-      </div>
+  <div class="columns">
+    <div class="column is-one-half">
+      <div contenteditable id="markdown" ref="contentEditable" @input="handleEdit" />
+    </div>
+    <div class="column is-one-half">
+      {{ markdown }}
     </div>
   </div>
+</div>
 </template>
 
 <script lang="ts">
@@ -38,14 +40,22 @@ export default defineComponent({
   setup(props) {
     const title = ref(props.post.title)
     const contentEditable = ref<null | HTMLDivElement>(null)
+    const markdown = ref(props.post.markdown)
+
+    const handleEdit = () => {
+      markdown.value = contentEditable.value.innerText
+    }
 
     onMounted(() => {
-      console.log(contentEditable.value)
+      console.log(markdown)
+      contentEditable.value.innerText = markdown.value
     })
 
     return {
       title,
-      contentEditable
+      contentEditable,
+      handleEdit,
+      markdown
     }
   }
 })
